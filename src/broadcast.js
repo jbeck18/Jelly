@@ -9,7 +9,7 @@ const params = utils.getParameters();
 let socket = null;
 
 const handleBroadcaster = function(key, data, room) {
-    //console.log("Broadcasting data to room: " + room);
+    console.log("Broadcasting data to room: " + room);
     let d = [];
     for(let i = 0; i < data.length; i++) {
         d.push(data[i]);
@@ -27,9 +27,12 @@ const handleBroadcaster = function(key, data, room) {
 };*/
 
 const handle = function(key, data) {
+    console.log('Handle!');
     if(params.room === null) {
         return;
     }
+
+    console.log('handling valid state');
 
     if(params.isbroadcaster === "true") {
         handleBroadcaster(key, data, params.room);
