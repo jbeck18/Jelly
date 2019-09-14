@@ -33,7 +33,7 @@ const setup = function() {
         return;
     }
     if(socket === null) {
-        socket = io('https://159.203.179.131:5000', { query: { room: params.room } });
+        socket = io('159.203.179.131:5000', { query: { room: params.room } });
         socket.on('message', function(data) {
             console.log('Message received: ' + data);
         });
