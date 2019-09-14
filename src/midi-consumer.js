@@ -1,6 +1,7 @@
 import { Visualizer } from './visualizer';
 import utils from './utils';
 import { Broadcaster } from './broadcast';
+const SoundFont = require('soundfont-player');
 
 let midi = null;
 
@@ -34,13 +35,12 @@ const handleKeyDepress = (key, data) => {
 };
 
 export function handleMIDIEvent(data) {
-    console.log(data);
     const eventType = data[0];
     const keyValue = data[1];
     const key = document.getElementById(keyValue + '');
 
     Broadcaster.handleEvent(key, data);
-
+    
     switch(eventType) {
         // Key pressed
         case 144:
@@ -60,13 +60,15 @@ function handleIncomingMIDI(data) {
     }
 
     handleMIDIEvent(data);
-
-    console.log(data);
 }
 
 function onMIDISuccess(midiAccess) {
     midi = midiAccess;
-    midiAccess.inputs.forEach( function(entry) {entry.onmidimessage = handleIncomingMIDI;} );
+
+    midiAccess.inputs.forEach( function(entry) {
+        entry.onmidimessage = handleIncomingMIDI;
+    });
+
     console.log( "Obtained permission for MIDI access!" );
 };
 
@@ -76,5 +78,5 @@ const onMIDIFailure = (msg) => {
 
 export function requestMIDIAccess() {
     console.log("requesting midi access...");
-    navigator.requestMIDIAccess( { sysex: false } ).then( onMIDISuccess, onMIDIFailure );
+    navigator.requestMIDIAccess( { sysex: true } ).then( onMIDISuccess, onMIDIFailure );
 }

@@ -17,5 +17,7 @@ application.setupKeys();
 application.animatePageLoad(startup);
 Broadcaster.setup();
 
+
+
 console.log('init done');
 
