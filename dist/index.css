@@ -1,0 +1,47 @@
+html {
+    background-color: black;
+    overflow: hidden;
+}
+
+#noteName {
+    color: white;
+    text-align: center;
+}
+
+#logo {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background-color: black;
+}
+
+#start-sound {
+    color: white;
+}
+
+#logo svg path {
+    fill-opacity: 0;
+}
+
+#keyboard {
+    background-color: black;
+}
+
+body {
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+}
+
+.spacer {
+    background-color: black;
+    flex-grow: 1;
+}
+
+#visualizer {
+    background-color: tan;
+    position: relative;
+    flex-grow: 3;
+}
