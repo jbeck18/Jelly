@@ -34,12 +34,6 @@ const handleKeyDepress = (key, data) => {
 };
 
 export function handleMIDIEvent(data) {
-    if(!Array.isArray(data)) {
-        data = data.data;
-    }
-
-    // console.log(data);
-
     const eventType = data[0];
     const keyValue = data[1];
     const key = document.getElementById(keyValue + '');
@@ -57,11 +51,21 @@ export function handleMIDIEvent(data) {
             handleKeyDepress(key, data);
             break;
     }
+};
+
+function handleIncomingMIDI(data) {
+    if(!Array.isArray(data)) {
+        data = data.data;
+    }
+
+    handleMIDIEvent(data);
+
+    // console.log(data);
 }
 
 function onMIDISuccess(midiAccess) {
     midi = midiAccess;
-    midiAccess.inputs.forEach( function(entry) {entry.onmidimessage = handleMIDIEvent;} );
+    midiAccess.inputs.forEach( function(entry) {entry.onmidimessage = handleIncomingMIDI;} );
     console.log( "Obtained permission for MIDI access!" );
 };
 

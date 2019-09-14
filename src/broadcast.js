@@ -18,19 +18,28 @@ const handleBroadcaster = function(key, data, room) {
     socket.emit('broadcast', {room: room, event: d});
 }
 
-const handleSubscriber = function(key, data, room) {
+/*const handleSubscriber = function(key, data, room) {
     socket.on('broadcastMIDIEvent', function(data) {
         const midi = JSON.parse(data)['data'];
         console.log(midi[0].split(','));
         Visualizer.handleEvent(document.getElementById(midi[1] + ''), midi);
     });
-};
+};*/
 
 const handle = function(key, data) {
     if(params.room === null) {
         return;
     }
 
+    if(params.isbroadcaster === "true") {
+        handleBroadcaster(key, data, params.room);
+    }
+};
+
+const setup = function() {
+    if(params.room === null) {
+        return;
+    }
     if(socket === null) {
         socket = io('http://159.203.179.131:5000', { query: { room: params.room } });
         socket.on('message', function(data) {
@@ -55,12 +64,9 @@ const handle = function(key, data) {
             });
         }
     }
-
-    if(params.isbroadcaster === "true") {
-        handleBroadcaster(key, data, params.room);
-    }
 };
 
 export const Broadcaster = {
-    handleEvent: (key, data) => handle(key, data)
+    handleEvent: (key, data) => handle(key, data),
+    setup: () => setup()
 };
