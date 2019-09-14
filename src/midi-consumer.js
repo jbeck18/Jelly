@@ -34,6 +34,7 @@ const handleKeyDepress = (key, data) => {
 };
 
 export function handleMIDIEvent(data) {
+    console.log(data);
     const eventType = data[0];
     const keyValue = data[1];
     const key = document.getElementById(keyValue + '');
@@ -60,7 +61,7 @@ function handleIncomingMIDI(data) {
 
     handleMIDIEvent(data);
 
-    // console.log(data);
+    console.log(data);
 }
 
 function onMIDISuccess(midiAccess) {
