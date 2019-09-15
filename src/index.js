@@ -17,7 +17,12 @@ application.setupKeys();
 application.animatePageLoad(startup);
 Broadcaster.setup();
 
-
+const io = require('socket.io-client');
+const socket = io.connect('localhost:4200');
+socket.on('connect', function(data) {
+    socket.emit('join', 'Hello World from client');
+    console.log("connected!");
+});
 
 console.log('init done');
 
