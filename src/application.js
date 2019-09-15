@@ -1,5 +1,4 @@
 import anime from 'animejs/lib/anime.es';
-import utils from './utils';
 import { handleMIDIEvent } from './midi-consumer';
 
 const application = {
@@ -9,15 +8,11 @@ const application = {
         const keys = [];
         for(var i = 21; i <= 108; i++) {
             const key = document.getElementById(i + '')
-            key.onmouseenter = () => {
-                //noteName.innerHTML = midiToNoteName(key.id);
-                key.style.fill = utils.getNextColor();
+            key.onmousedown = () => {
                 handleMIDIEvent([144, key.id, 127]);
             };
         
-            key.onmouseleave = () => {
-                //noteName.innerHTML = '-';
-                key.style.fill = key.classList.contains('white') ? 'white' : 'black';
+            key.onmouseup = () => {
                 handleMIDIEvent([128, key.id, 0]);
             };
         

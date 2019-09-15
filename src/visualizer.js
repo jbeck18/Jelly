@@ -1,5 +1,5 @@
 import { midiToNoteName } from '@tonaljs/midi';
-
+import utils from './utils';
 
 const noteName = document.getElementById('noteName');
 const visualizer = document.getElementById('visualizer');
@@ -7,6 +7,8 @@ const keysPressed = [];
 
 const handle = function(key, data) {
     if(data[0] === 144) {
+        key.style.fill = utils.getNextColor();
+
         const box = document.createElement('div');
         box.style.display = 'inline-block'
         box.style.position = 'absolute';
@@ -93,6 +95,8 @@ const handle = function(key, data) {
         keysPressed.push(midiToNoteName(key.id));
 
     } else if(data[0] === 128) {
+        key.style.fill = key.classList.contains('white') ? 'white' : 'black';
+
         const pressed = visualizer.querySelectorAll(`.currentlyPressed, .${midiToNoteName(key.id)}`);
 
         for(var i = 0; i < pressed.length; i++) {

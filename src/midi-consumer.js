@@ -78,5 +78,5 @@ const onMIDIFailure = (msg) => {
 
 export function requestMIDIAccess() {
     console.log("requesting midi access...");
-    navigator.requestMIDIAccess( { sysex: false } ).then( onMIDISuccess, onMIDIFailure );
+    navigator.requestMIDIAccess( { sysex: true } ).then( onMIDISuccess, onMIDIFailure );
 }
