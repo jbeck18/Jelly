@@ -33,7 +33,8 @@ const setup = function() {
         return;
     }
     if(socket === null) {
-        socket = io('www.jelly.studio', { query: { room: params.room }, path: '/redis/socket.io' });
+        socket = io.connect('https://jelly.studio');
+        //socket = io.connect('localhost:4200');
         socket.on('message', function(data) {
             console.log('Message received: ' + data);
         });
@@ -45,14 +46,12 @@ const setup = function() {
         if(params.isbroadcaster === "true") {
             
         } else {
-            socket.emit('subscribe', {room: params.room});
-            console.log("Subscribed to broadcast...");
             socket.on('broadcastMIDIEvent', function(data) {
-                const midi = Array.of(JSON.parse(data)['data']);
-                const res = midi[0].replace('[', '').replace(']', '').replace('\"', '').split(',').map((element => parseInt(element.trim(), 10)));
-                res[1] = res[1] + '';
-                console.log(res);
-                Visualizer.handleEvent(document.getElementById(res[1]), res);
+                // const midi = Array.of(JSON.parse(data)['data']);
+                // const res = midi[0].replace('[', '').replace(']', '').replace('\"', '').split(',').map((element => parseInt(element.trim(), 10)));
+                // res[1] = res[1] + '';
+                console.log(data);
+                Visualizer.handleEvent(document.getElementById(data[1]), data);
             });
         }
     }

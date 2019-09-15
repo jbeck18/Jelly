@@ -17,19 +17,19 @@ application.setupKeys();
 application.animatePageLoad(startup);
 Broadcaster.setup();
 
-console.log('creating test socket!');
-const io = require('socket.io-client');
-const socket = io.connect('https://jelly.studio');
+// console.log('creating test socket!');
+// const io = require('socket.io-client');
+// const socket = io.connect('https://jelly.studio');
 
-socket.on('connect', function(data) {
-    console.log('connected to socket.io!');
-    socket.emit('join', '123456');
-    console.log("connected to room 123456");
-});
+// socket.on('connect', function(data) {
+//     console.log('connected to socket.io!');
+//     socket.emit('join', '123456');
+//     console.log("connected to room 123456");
+// });
 
-socket.on('message', function(msg) {
-    console.log('message received: ' + msg);
-});
+// socket.on('message', function(msg) {
+//     console.log('message received: ' + msg);
+// });
 
 console.log('init done');
 
