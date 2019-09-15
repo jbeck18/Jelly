@@ -20,8 +20,12 @@ Broadcaster.setup();
 const io = require('socket.io-client');
 const socket = io.connect('localhost:4200');
 socket.on('connect', function(data) {
-    socket.emit('join', 'Hello World from client');
-    console.log("connected!");
+    socket.emit('join', '123456');
+    console.log("connected to room 123456");
+});
+
+socket.on('message', function(msg) {
+    console.log('message received: ' + msg);
 });
 
 console.log('init done');

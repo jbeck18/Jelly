@@ -11,9 +11,14 @@ app.get('/', function(req, res, next) {
 io.on('connection', function(client) {
     console.log('Client connected...');
 
-    client.on('join', function(data) {
-        console.log(data);
+    client.on('join', function(room) {
+        client.join(room);
+        io.to(room).emit('message', 'DID THIS REALLY JUST WORK!?!?');
     });
+
+    client.on('message', function(msg) {
+        console.log("Message received: " + msg);
+    })
 });
 
 server.listen(4200);
