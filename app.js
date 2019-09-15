@@ -12,6 +12,7 @@ io.on('connection', function(client) {
     console.log('Client connected...');
 
     client.on('join', function(room) {
+        console.log(room);
         client.join(room);
         io.to(room).emit('message', 'DID THIS REALLY JUST WORK!?!?');
     });

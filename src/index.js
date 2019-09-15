@@ -17,9 +17,12 @@ application.setupKeys();
 application.animatePageLoad(startup);
 Broadcaster.setup();
 
+console.log('creating test socket!');
 const io = require('socket.io-client');
 const socket = io.connect('https://jelly.studio');
-socket.on('connection', function(data) {
+
+socket.on('connect', function(data) {
+    console.log('connected to socket.io!');
     socket.emit('join', '123456');
     console.log("connected to room 123456");
 });
