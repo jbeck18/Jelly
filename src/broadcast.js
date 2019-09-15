@@ -33,7 +33,7 @@ const setup = function() {
         return;
     }
     if(socket === null) {
-        socket = io('159.203.179.131:5000', { query: { room: params.room } });
+        socket = io('jelly.studio/redis', { query: { room: params.room } });
         socket.on('message', function(data) {
             console.log('Message received: ' + data);
         });
