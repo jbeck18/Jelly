@@ -9,13 +9,8 @@ const params = utils.getParameters();
 let socket = null;
 
 const handleBroadcaster = function(key, data, room) {
-    console.log("Broadcasting data to room: " + room);
-    let d = [];
-    for(let i = 0; i < data.length; i++) {
-        d.push(data[i]);
-    }
-    d[1] = d[1] + '';
-    socket.emit('broadcast', {room: room, event: d});
+    // console.log("Broadcasting data to room: " + room);
+    socket.emit('broadcast', {room: room, event: data});
 }
 
 const handle = function(key, data) {
@@ -40,17 +35,14 @@ const setup = function() {
         });
         socket.on('connect', function() {
             socket.emit('join', {room: params.room});
-            console.log('Connected to redis server');
+            console.log('Connected to socket.io server');
         });
 
         if(params.isbroadcaster === "true") {
             
         } else {
             socket.on('broadcastMIDIEvent', function(data) {
-                // const midi = Array.of(JSON.parse(data)['data']);
-                // const res = midi[0].replace('[', '').replace(']', '').replace('\"', '').split(',').map((element => parseInt(element.trim(), 10)));
-                // res[1] = res[1] + '';
-                console.log(data);
+                // console.log(data);
                 Visualizer.handleEvent(document.getElementById(data[1]), data);
             });
         }
