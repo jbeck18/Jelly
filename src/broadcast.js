@@ -42,7 +42,15 @@ const setup = function() {
         } else {
             socket.on('broadcastMIDIEvent', function(data) {
                 // console.log(data);
-                Visualizer.handleEvent(document.getElementById(data[1]), data);
+                let d = [];
+                for(let i = 0; i < data.length; i++) {
+                    d.push(data[i]);
+                }
+                d[1] = d[1] + '';
+
+                handleMIDIEvent(d);
+
+                // Visualizer.handleEvent(document.getElementById(data[1]), data);
             });
         }
     }
