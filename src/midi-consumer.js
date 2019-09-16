@@ -56,7 +56,7 @@ export function handleMIDIEvent(data) {
     const key = document.getElementById(keyValue + '');
 
     Broadcaster.handleEvent(key, data);
-    console.log(data);
+    //console.log(data);
     switch(eventType) {
         // Key pressed
         case 144:

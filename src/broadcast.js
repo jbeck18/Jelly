@@ -10,7 +10,14 @@ let socket = null;
 
 const handleBroadcaster = function(key, data, room) {
     // console.log("Broadcasting data to room: " + room);
-    socket.emit('broadcast', {room: room, event: data});
+    let d = [];
+    for(let i = 0; i < data.length; i++) {
+        d.push(data[i]);
+    }
+    d[1] = d[1] + '';
+
+
+    socket.emit('broadcast', {room: room, event: d});
 }
 
 const handle = function(key, data) {
@@ -42,11 +49,6 @@ const setup = function() {
         } else {
             socket.on('broadcastMIDIEvent', function(data) {
                 // console.log(data);
-                let d = [];
-                for(let i = 0; i < data.length; i++) {
-                    d.push(data[i]);
-                }
-                d[1] = d[1] + '';
 
                 handleMIDIEvent(d);
 
