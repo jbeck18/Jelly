@@ -50,6 +50,8 @@ const handleKeyDepress = (key, data) => {
     }
 };
 
+const eventCount = document.getElementById('event-count');
+
 export function handleMIDIEvent(data) {
     const eventType = data[0];
     const keyValue = data[1];
@@ -68,6 +70,10 @@ export function handleMIDIEvent(data) {
             handleKeyDepress(key, data);
             break;
     }
+
+    let count = parseInt(eventCount.textContent, 10);
+    count++;
+    eventCount.textContent = count + '';
 
     if(piano !== null) {
         if(eventType === 144) {

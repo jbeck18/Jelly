@@ -45,3 +45,8 @@ body {
     position: relative;
     flex-grow: 3;
 }
+
+#event-count {
+    color: white;
+    text-align: center;
+}
