@@ -16,8 +16,10 @@ const handleBroadcaster = function(key, data, room) {
     }
     d[1] = d[1] + '';
 
+    const time = new Date().getTime();
 
-    socket.emit('broadcast', {room: room, event: d});
+
+    socket.emit('broadcast', {room: room, event: d, time: time});
 }
 
 const handle = function(key, data) {
@@ -36,6 +38,7 @@ const setup = function() {
     }
     if(socket === null) {
         socket = io.connect('https://jelly.studio');
+        //socket = io.connect('localhost:4200');
         socket.on('message', function(data) {
             console.log('Message received: ' + data);
         });
@@ -48,11 +51,12 @@ const setup = function() {
             
         } else {
             socket.on('broadcastMIDIEvent', function(data) {
-                // console.log(data);
-
-                handleMIDIEvent(data);
-
-                // Visualizer.handleEvent(document.getElementById(data[1]), data);
+                const offset = new Date().getTime() - data['time'] + 1000;
+                console.log(offset);
+                console.log(data['data']);
+                setTimeout(function() {
+                    handleMIDIEvent(data['data']);
+                }, offset);
             });
         }
     }

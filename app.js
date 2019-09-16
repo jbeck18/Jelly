@@ -24,10 +24,11 @@ io.on('connection', function(client) {
     });
 
     client.on('broadcast', function(data) {
-        room = data['room'];
-        event = data['event'];
+        const room = data['room'];
+        const event = data['event'];
+        const time = data['time'];
 
-        io.to(room).emit('broadcastMIDIEvent', event);
+        io.to(room).emit('broadcastMIDIEvent', { data: event, time: time });
     });
 
     client.on('message', function(msg) {
