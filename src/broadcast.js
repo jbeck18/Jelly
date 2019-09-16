@@ -51,7 +51,7 @@ const setup = function() {
             
         } else {
             socket.on('broadcastMIDIEvent', function(data) {
-                const offset = new Date().getTime() - data['time'] + 1000;
+                const offset = 1200 - (new Date().getTime() - data['time']);
                 console.log(offset);
                 console.log(data['data']);
                 setTimeout(function() {
