@@ -50,7 +50,7 @@ const setup = function() {
             socket.on('broadcastMIDIEvent', function(data) {
                 // console.log(data);
 
-                handleMIDIEvent(d);
+                handleMIDIEvent(data);
 
                 // Visualizer.handleEvent(document.getElementById(data[1]), data);
             });
