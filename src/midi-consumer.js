@@ -1,94 +1,37 @@
 import { Visualizer } from './visualizer';
-import utils from './utils';
 import { Broadcaster } from './broadcast';
-const SoundFont = require('soundfont-player');
+import { SoundGenerator } from './sound-generator';
 
 let midi = null;
 
-var ac = null;
-var piano = null;
+class MidiHandler {
 
-var notes = {};
+    constructor() {
+        this.observers = [];
+    }
 
-function createPianoSound() {
-    if(ac === null) {
-        ac = new AudioContext();
+    subscribe(observer) {
+        this.observers.push(observer);
+    }
 
-        SoundFont.instrument(ac, 'acoustic_grand_piano').then(function(res) {
-            piano = res;
-        });
+    unsubscribe(observer) {
+        this.observers = this.observers.filter(subscriber => subscriber !== observer);
+    }
+
+    notify(key, data) {
+        this.observers.forEach(observer => observer(key, data));
     }
 }
-document.getElementById('start-sound').onclick = createPianoSound;
 
-const handleKeyPress = (key, data) => {
-    const color = document.getElementById('pressed-color').value;
-    if(color !== 'random') {
-        key.style.fill = '#' + color;
-    } else {
-        key.style.fill = utils.randomColorHSL();
-    }
-
-    try {
-        Visualizer.handleEvent(key, data);
-    } catch(err) {
-        console.log(err);
-    }
-};
-
-const handleKeyDepress = (key, data) => {
-    if(key.className.baseVal === 'white') {
-        key.style.fill = 'white';
-    } else {
-        key.style.fill = 'black';
-    }
-
-    try {
-        Visualizer.handleEvent(key, data);
-    } catch(err) {
-        console.log(err);
-    }
-};
-
-const eventCount = document.getElementById('event-count');
+const midiHandler = new MidiHandler();
+midiHandler.subscribe(Visualizer.handleEvent);
+midiHandler.subscribe(Broadcaster.handleEvent);
+midiHandler.subscribe(SoundGenerator.handleEvent);
 
 export function handleMIDIEvent(data) {
-    const eventType = data[0];
-    const keyValue = data[1];
-    const key = document.getElementById(keyValue + '');
+    const key = document.getElementById(data[1] + '');
 
-    Broadcaster.handleEvent(key, data);
-    //console.log(data);
-    switch(eventType) {
-        // Key pressed
-        case 144:
-            handleKeyPress(key, data);
-            break;
-
-        // Key depressed
-        case 128:
-            handleKeyDepress(key, data);
-            break;
-    }
-
-    let count = parseInt(eventCount.textContent, 10);
-    count++;
-    eventCount.textContent = count + '';
-
-    if(piano !== null) {
-        if(eventType === 144) {
-            let key = data[1];
-            let volume = (data[2] / 127)
-            volume = parseFloat(Math.round(volume * 100) / 100);
-
-            let val = piano.play(key, ac.currentTime, { gain: volume });
-            notes[key] = val;
-        } else if(eventType === 128) {
-            let key = data[1];
-            notes[key].stop(ac.currentTime + 0.01);
-            notes[key] = null;
-        }
-    }
+    midiHandler.notify(key, data);
 };
 
 function handleIncomingMIDI(data) {

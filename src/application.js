@@ -4,7 +4,6 @@ import { handleMIDIEvent } from './midi-consumer';
 const application = {
 
     setupKeys: () => {
-        const noteName = document.getElementById('noteName');
         const keys = [];
         for(var i = 21; i <= 108; i++) {
             const key = document.getElementById(i + '')
