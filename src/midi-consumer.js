@@ -31,6 +31,8 @@ midiHandler.subscribe(SoundGenerator.handleEvent);
 export function handleMIDIEvent(data) {
     const key = document.getElementById(data[1] + '');
 
+    // console.log(data);
+
     midiHandler.notify(key, data);
 };
 
