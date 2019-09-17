@@ -15,20 +15,46 @@ function createPianoSound() {
 }
 document.getElementById('start-sound').onclick = createPianoSound;
 
+function playNote(key, data) {
+    let volume = (data[2] / 127);
+    volume = parseFloat(Math.round(volume * 100) / 100);
+
+    let playerId = piano.play(key, ac.currentTime, { volume: volume } );
+
+    const id = setInterval(function() {
+        let ops = {};
+        volume = Math.max(volume-0.1, 0);
+        
+        ops.volume = volume;
+        ops.attack = 2;
+
+        // console.log("playing with volume of: " + volume);
+
+        let playerId = piano.play(key, ac.currentTime, ops);
+        notes[data[1]].players.push(playerId);
+
+    }, 1500);
+
+    notes[data[1]] = {
+        interval: id,
+        players: [playerId]
+    };
+}
+
 function handleEvent(key, data) {
     const eventType = data[0];
-    
-    if(piano !== null) {
-        if(eventType === 144) {
-            let key = data[1];
-            let volume = (data[2] / 127)
-            volume = parseFloat(Math.round(volume * 100) / 100);
 
-            let val = piano.play(key, ac.currentTime, { gain: volume });
-            notes[key] = val;
+    if(piano !== null) {
+        const key = data[1];
+        if(eventType === 144) {
+            playNote(key, data);
+
         } else if(eventType === 128) {
-            let key = data[1];
-            notes[key].stop(ac.currentTime + 0.01);
+            // notes[key].stop(ac.currentTime + 0.01);
+            clearInterval(notes[key].interval);
+            notes[key].players.forEach(function(note) {
+                note.stop(ac.currentTime + 0.01);
+            });
             notes[key] = null;
         }
     }
