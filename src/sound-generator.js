@@ -16,36 +16,57 @@ function createPianoSound() {
 }
 document.getElementById('start-sound').onclick = createPianoSound;
 
-function playNote(key, data) {
-    let volume = (data[2] / 127);
-    volume = parseFloat(Math.round(volume * 100) / 100);
+var deactivateQueue = [];
 
-    let playerId = piano.play(key, ac.currentTime, { volume: volume } );
-
-    if(notes[data[1]] === null || typeof notes[data[1]] === 'undefined') {
-        notes[data[1]] = {
-            intervals: [],
-            players: [playerId]
-        };
+class SoundRegistry {
+    constructor() {
+        this.notes = {};
     }
 
-    const id = setInterval(function() {
-        let ops = {};
-        volume = Math.max(volume-0.1, 0);
-        
-        ops.volume = volume;
-        ops.attack = 2;
+    registerPress(key, data) {
+        let volume = (data[2] / 127);
+        volume = parseFloat(Math.round(volume * 100) / 100);
 
-        let playerId = piano.play(key, ac.currentTime, ops);
+        const node = {
+            players: [],
+            interval: null,
+            volume: volume,
+            key: data[1],
+            start() {
+                this.players.push(piano.play(this.key, ac.currentTime, { gain: this.volume } ));
 
-        notes[data[1]].players.push(playerId);
+                this.interval = setInterval(function() {
+                    let ops = {};
+                    node.volume = Math.max(node.volume-0.1, 0);
+                    
+                    ops.gain = node.volume;
+                    ops.attack = 2;
 
-    }, 1500);
+                    node.players.push(piano.play(node.key, ac.currentTime, ops));
+                }, 1500);            
+            },
+            stop() {
+                clearInterval(this.interval);
+                this.players.forEach(function(player) {
+                    player.stop(ac.currentTime + 0.01);
+                });
+            }
+        };
+        node.start();
+        this.notes[data[1]] = node;
+    }
 
-    notes[data[1]].intervals.push(id);
+    registerDepress(key, data) {
+        if(!sustaining) {
+            this.notes[data[1]].stop();
+        } else {
+            deactivateQueue.push(this.notes[data[1]]);
+        }
+        delete this.notes[data[1]];
+    }
 }
 
-var deactivateQueue = [];
+const registry = new SoundRegistry();
 
 function handleEvent(key, data) {
     const eventType = data[0];
@@ -53,37 +74,19 @@ function handleEvent(key, data) {
     if(piano !== null) {
         const key = data[1];
         if(eventType === 144) {
-            playNote(key, data);
+            registry.registerPress(key, data);
         } else if(eventType === 128) {
-            const intervals = notes[key].intervals;
-            const players = notes[key].players;
-
-            const stopNote = function() {
-                intervals.forEach(function(interval) {
-                    clearInterval(interval);
-                });
-
-                players.forEach(function(note) {
-                    note.stop(ac.currentTime + 0.01);
-                });
-                notes[key] = null;
-            }
-
-            if(!sustaining) {
-                stopNote();
-            } else {
-                console.log("sustaining depressed note!")
-                deactivateQueue.push(stopNote);
-            }
+            registry.registerDepress(key, data);            
         } else if(data[1] === 64) {
             if(data[2] >= 64) {
                 sustaining = true;
             } else {
                 if(!sustaining) return;
                 sustaining = false;
-                console.log("stoppping sustained notes")
-                deactivateQueue.forEach(function(stop) {
-                    stop();
+                console.log("stoppping sustained notes");
+
+                deactivateQueue.forEach(function(note) {
+                    note.stop();
                 });
                 deactivateQueue = [];
             }
