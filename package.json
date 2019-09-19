@@ -19,6 +19,7 @@
     "animejs": "^3.1.0",
     "express": "^4.17.1",
     "midi-player-js": "^2.0.5",
+    "mongodb": "^3.3.2",
     "socket.io": "^2.2.0",
     "socket.io-client": "^2.2.0",
     "soundfont-player": "^0.11.0"

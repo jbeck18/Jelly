@@ -1,6 +1,7 @@
 import { Visualizer } from './visualizer';
 import { Broadcaster } from './broadcast';
 import { SoundGenerator } from './sound-generator';
+import { Recorder } from './recorder';
 
 let midi = null;
 
@@ -27,6 +28,7 @@ const midiHandler = new MidiHandler();
 midiHandler.subscribe(Visualizer.handleEvent);
 midiHandler.subscribe(Broadcaster.handleEvent);
 midiHandler.subscribe(SoundGenerator.handleEvent);
+midiHandler.subscribe(Recorder.handleEvent);
 
 export function handleMIDIEvent(data) {
     const key = document.getElementById(data[1] + '');

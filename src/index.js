@@ -2,7 +2,7 @@ import application from './application';
 import { requestMIDIAccess } from './midi-consumer';
 import { Visualizer } from './visualizer';
 import { Broadcaster } from './broadcast';
-
+import { Recorder } from './recorder';
 
 function startup() {
     requestMIDIAccess();
@@ -12,6 +12,7 @@ function startup() {
 application.setupKeys();
 application.animatePageLoad(startup);
 Broadcaster.setup();
+Recorder.setup();
 
 console.log('init done');
 

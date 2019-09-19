@@ -77,7 +77,7 @@ function handleEvent(key, data) {
             registry.registerPress(key, data);
         } else if(eventType === 128) {
             registry.registerDepress(key, data);            
-        } else if(data[1] === 64) {
+        } else if(data[1] === 64 || data[0] === 176) {
             if(data[2] >= 64) {
                 sustaining = true;
             } else {

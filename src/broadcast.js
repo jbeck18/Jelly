@@ -1,7 +1,6 @@
 import io from 'socket.io-client';
 import utils from './utils';
 import { handleMIDIEvent } from './midi-consumer';
-import { Visualizer } from './visualizer';
 
 console.log("creating socket...");
 
