@@ -5,13 +5,19 @@ var piano = null;
 var notes = {};
 var sustaining = false;
 
+var AudioContext = window.AudioContext // Default
+    || window.webkitAudioContext // Safari and old versions of Chrome
+    || false; 
+
 export function createPianoSound() {
-    if(ac === null) {
-        ac = new AudioContext();
+    if(ac === null && AudioContext) {
+        ac = new AudioContext;
 
         SoundFont.instrument(ac, 'acoustic_grand_piano').then(function(res) {
             piano = res;
         });
+    } else {
+        console.log("Your browser does not support AudioContext!");
     }
 }
 document.getElementById('start-sound').onclick = createPianoSound;
