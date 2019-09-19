@@ -6,7 +6,11 @@ import { Recorder } from './recorder';
 import { Playback } from './playback';
 
 function startup() {
-    requestMIDIAccess();
+    try {
+        requestMIDIAccess();
+    } catch(err) {
+        console.log(err);
+    }
     Visualizer.start();
 }
 
