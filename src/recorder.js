@@ -18,8 +18,8 @@ function setup() {
     }
 
     if(socket === null) {
-        // socket = io.connect('https://jelly.studio');
-        socket = io.connect('localhost:4200');
+        socket = io.connect('https://jelly.studio');
+        // socket = io.connect('localhost:4200');
         socket.on('message', function(data) {
             console.log('Message received: ' + data);
         });
