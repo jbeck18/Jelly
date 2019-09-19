@@ -30,10 +30,8 @@ midiHandler.subscribe(Broadcaster.handleEvent);
 midiHandler.subscribe(SoundGenerator.handleEvent);
 midiHandler.subscribe(Recorder.handleEvent);
 
-export function handleMIDIEvent(data) {
+export function handleMIDIEvent(data) {    
     const key = document.getElementById(data[1] + '');
-
-    // console.log(data);
 
     midiHandler.notify(key, data);
 };

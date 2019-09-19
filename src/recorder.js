@@ -26,13 +26,29 @@ function setup() {
     }
 }
 
+var started = false;
+var startTime = null;
+
 function handle(key, data) {
     if(!shouldRecord) {
         return;
     }
 
-    data.push(new Date().getTime());
-    socket.emit('saveMidi', { title: params.recordingtitle, data: data });
+    if(!started) {
+        started = true;
+        startTime = new Date().getTime();
+    }
+
+    const d = [];
+    d.push(data[0]);
+    d.push(data[1]);
+    d.push(data[2]);
+    d[1] = d[1] + '';
+    d.push(new Date().getTime() - startTime);
+
+    console.log(d);
+
+    socket.emit('saveMidi', { title: params.recordingtitle, data: d });
 }
 
 export const Recorder = {

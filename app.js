@@ -59,6 +59,17 @@ io.on('connection', function(client) {
             if (err) throw err;
         });
     });
+
+    client.on('requestRecording', function(title) {
+        const query = { "title": title }
+
+        mongoRecordings.findOne(query, function(err, doc) {
+            //console.log("Found the following records");
+            //console.log(doc);
+
+            io.emit('recordingData', doc);
+        });
+    });
 });
 
 server.listen(4200);
