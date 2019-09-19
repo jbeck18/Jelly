@@ -8,6 +8,11 @@
     </head>
     <body>
       <header id="logo">
+        <div id="controls">
+            <input id="pressed-color" type="text" value="808080" maxlength="6">
+            <button id="start-sound" type="button">Start Sound</button>
+            <button id="start-playback" type="button">Start Playback</button>
+        </div>
         <svg width="316px" height="98px" viewBox="0 0 316 98" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
           <defs>
               <filter x="-4.2%" y="-14.8%" width="108.5%" height="129.5%" filterUnits="objectBoundingBox" id="filter-1">
@@ -32,12 +37,13 @@
               </g>
           </g>
         </svg>
+        <div id="logo-spacer">
+
+        </div>
       </header>
 
       <div id="top-spacer" class="spacer">
         <h1 id="note-name">-</h1>
-        <input id="pressed-color" type="text" value="808080" maxlength="6">
-        <button id="start-sound" type="button">Start Sound</button>
       </div>
 
       <div id="visualizer">

@@ -8,15 +8,30 @@ html {
     text-align: center;
 }
 
+#controls {
+    text-align: left;
+    width: 33%;
+    margin: auto auto;
+}
+
 #logo {
     width: 100%;
     display: flex;
-    justify-content: center;
+    flex-direction: row;
+    justify-content: space-between;
     background-color: black;
 }
 
-#start-sound {
-    color: white;
+#logo-spacer {
+    width: 33%;
+}
+
+#logo svg {
+    width: 33%;
+}
+
+button {
+    color: black;
 }
 
 #logo svg path {
@@ -40,10 +55,18 @@ body {
     flex-grow: 1;
 }
 
+#top-spacer {
+    flex-grow: 0;
+}
+
 #visualizer {
-    background-color: tan;
+    background-color: black;
     position: relative;
-    flex-grow: 3;
+    flex-grow: 10;
+
+    border-top-style: solid;
+    border-top-color: white;
+    border-top-width: 5px;
 }
 
 #event-count {

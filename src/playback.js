@@ -1,6 +1,7 @@
 import io from 'socket.io-client';
 import utils from './utils';
 import { handleMIDIEvent } from './midi-consumer';
+import { createPianoSound } from './sound-generator';
 
 const params = utils.getParameters();
 var socket = null;
@@ -10,12 +11,13 @@ if(typeof params.playbacktitle !== 'undefined') {
     shouldPlayback = true;
 }
 
-function setup() {
+function startPlayback() {
     if(!shouldPlayback) {
         return;
     }
 
     if(socket === null) {
+        createPianoSound();
         // socket = io.connect('https://jelly.studio');
         socket = io.connect('localhost:4200');
         socket.on('message', function(data) {
@@ -42,6 +44,10 @@ function setup() {
             });
         });
     }
+}
+
+function setup() {
+    document.getElementById('start-playback').onclick = startPlayback;
 }
 
 export const Playback = {

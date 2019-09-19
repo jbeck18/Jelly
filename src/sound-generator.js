@@ -5,7 +5,7 @@ var piano = null;
 var notes = {};
 var sustaining = false;
 
-function createPianoSound() {
+export function createPianoSound() {
     if(ac === null) {
         ac = new AudioContext();
 
