@@ -42,6 +42,10 @@ button {
     background-color: black;
 }
 
+.white {
+    fill: white;
+}
+
 body {
     display: flex;
     height: 100vh;
@@ -59,14 +63,21 @@ body {
     flex-grow: 0;
 }
 
-#visualizer {
-    background-color: black;
+#visualizer-div {
     position: relative;
     flex-grow: 10;
 
     border-top-style: solid;
     border-top-color: white;
     border-top-width: 5px;
+}
+
+#visualizer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    background-color: black;
 }
 
 #event-count {

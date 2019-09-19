@@ -3,13 +3,25 @@ import utils from './utils';
 
 const noteName = document.getElementById('note-name');
 const visualizer = document.getElementById('visualizer');
-const keysPressed = [];
+
+const dpi = window.devicePixelRatio;
+console.log(dpi);
+const animationStep = dpi*3;
+
+visualizer.width = document.getElementById('visualizer-div').getBoundingClientRect().width * dpi;
+visualizer.height = document.getElementById('visualizer-div').getBoundingClientRect().height * dpi;
+console.log(visualizer.width);
+console.log(visualizer.height);
+
+var keysPressed = [];
 
 // Need to be recalculated when window is resized?
-const defaultWidthBlackKey = document.getElementById('22').getBoundingClientRect().width;
-const defaultWidthWhiteKey = document.getElementById('21').getBoundingClientRect().width;
+const defaultWidthBlackKey = document.getElementById('22').getBoundingClientRect().width * dpi;
+const defaultWidthWhiteKey = document.getElementById('21').getBoundingClientRect().width * dpi;
 
-const visualizerHeight = visualizer.getBoundingClientRect().height + 'px';
+const visualizerHeight = visualizer.getBoundingClientRect().height * dpi;
+
+var visualizerNodes = [];
 
 /**
  * Creates a box element for the visualizer
@@ -17,18 +29,15 @@ const visualizerHeight = visualizer.getBoundingClientRect().height + 'px';
  * @param {*} data 
  */
 function createBox(key, data) {
-    const box = document.createElement('div');
-    box.style.display = 'inline-block'
-    box.style.position = 'absolute';
-
-    box.style.height = 'auto';
-    box.style.top = visualizerHeight;
-    box.style.bottom = 0;
-
-    box.style.backgroundColor = `hsl(314,${Math.floor((data[2] * 100) / 127)}%,49%)`;
-
-    box.classList.add('currentlyPressed');
-    box.classList.add(midiToNoteName(key.id));
+    const box = {
+        x: 0,
+        y: visualizerHeight,
+        width: 0,
+        height: animationStep,
+        fill: `hsl(314,${Math.floor((data[2] * 100) / 127)}%,49%)`,
+        note: midiToNoteName(key.id),
+        currentlyPressed: true
+    };
 
     return box;
 }
@@ -67,7 +76,7 @@ function handleKeyPress(key, data) {
         }
 
         const left = computeLeft();
-        box.style.left = left + 'px';
+        box.x = left;
 
         let width = defaultWidth;
         if(note === 'C8') {
@@ -79,7 +88,7 @@ function handleKeyPress(key, data) {
         } else {
             width -= (defaultWidth/2);
         }
-        box.style.width = width + 'px';
+        box.width = width;
     } else {
         const defaultWidth = defaultWidthBlackKey;
         let note = midiToNoteName(key.id);
@@ -110,11 +119,11 @@ function handleKeyPress(key, data) {
         }
 
         const left = computeLeft();
-        box.style.left = left + 'px';
-        box.style.width = defaultWidth + 'px';
+        box.x = left;
+        box.width = defaultWidth;
     }
 
-    visualizer.appendChild(box);
+    visualizerNodes.push(box);
     keysPressed.push(midiToNoteName(key.id));
 }
 
@@ -126,11 +135,9 @@ function handleKeyPress(key, data) {
 function handleKeyDepress(key, data) {
     key.style.fill = key.classList.contains('white') ? 'white' : 'black';
 
-    const pressed = visualizer.querySelectorAll(`.currentlyPressed, .${midiToNoteName(key.id)}`);
-
-    for(var i = 0; i < pressed.length; i++) {
-        if(pressed[i].className.split(' ').includes('currentlyPressed') && pressed[i].className.split(' ').includes(midiToNoteName(key.id))) {
-            pressed[i].classList.remove('currentlyPressed');
+    for(var i = 0; i < visualizerNodes.length; i++) {
+        if(visualizerNodes[i].currentlyPressed && visualizerNodes[i].note === midiToNoteName(key.id)) {
+            visualizerNodes[i].currentlyPressed = false;
         }
     }
 
@@ -163,33 +170,39 @@ const start = function() {
         return;
     }
 
-    interval = setInterval(function() {
-        for(let i = 0; i < visualizer.children.length; i++) {
+    const begin = function() {
+        for(let i = 0; i < visualizerNodes.length; i++) {
 
-            const element = visualizer.children[i];
+            const element = visualizerNodes[i];
 
-            let top = parseInt(element.style.top);
-            let bottom = parseInt(element.style.bottom);
-
-            if(top > 0) {
-                top--;
-            }
-
-
-            if(element.classList.contains("currentlyPressed")) {
-                
-            } else {
-                bottom++;
-            }
-
-            element.style.top = top + 'px';
-            element.style.bottom = bottom + 'px';
-
-            if(parseInt(element.style.bottom, 10) >= visualizer.getBoundingClientRect().height) {
-                element.remove();
+            if(element.currentlyPressed && element.height < visualizerHeight) {
+                element.height+=animationStep;
+                element.y-=animationStep;
+            } else if(!element.currentlyPressed) {
+                if(element.y > 0) {
+                    element.y-=animationStep;
+                } else {
+                    element.height-=animationStep;
+                }
             }
         }
-    }, 10);
+
+        visualizerNodes = visualizerNodes.filter(function(node) {
+            return (node.y + node.height) > 0;
+        });
+
+        const ctx = visualizer.getContext('2d');
+        ctx.clearRect(0, 0, visualizer.width, visualizer.height);
+        for(let i = 0; i < visualizerNodes.length; i++) {
+            const element = visualizerNodes[i];
+            ctx.fillStyle = element.fill;
+            ctx.fillRect(element.x, element.y, element.width, element.height);
+        }
+
+        window.requestAnimationFrame(begin);
+    }
+
+    window.requestAnimationFrame(begin);
 }
 
 /**
