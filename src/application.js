@@ -30,7 +30,7 @@ const application = {
             strokeDashoffset: [anime.setDashoffset, 0],
             easing: 'easeInOutSine',
             duration: 1000,
-            delay: 0 //anime.stagger(750, {start: 100})
+            delay: anime.stagger(750, {start: 100})
         });
         // Animate logo fill
         anime({
@@ -38,7 +38,7 @@ const application = {
             "fill-opacity": 1,
             easing: 'easeInOutSine',
             duration: 1000,
-            delay: 0 //anime.stagger(20, {start: 4100})
+            delay: anime.stagger(20, {start: 4100})
         });
         // Animate keys
         const keys = Array.from(document.querySelectorAll('.white, .black')).sort(function(a, b) {
@@ -47,7 +47,7 @@ const application = {
         anime({
             targets: keys,
             opacity: 1,
-            delay: 0, //anime.stagger(20, {start: 5000}),
+            delay: anime.stagger(20, {start: 5000}),
             easing: 'easeInOutSine',
             complete: callback
         });
