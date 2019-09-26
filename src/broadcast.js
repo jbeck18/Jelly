@@ -16,7 +16,6 @@ document.getElementById('start-broadcast').onclick = function(e) {
 };
 
 const handleBroadcaster = function(key, data, room) {
-    // console.log("Broadcasting data to room: " + room);
     let d = [];
     for(let i = 0; i < data.length; i++) {
         d.push(data[i]);
@@ -24,7 +23,6 @@ const handleBroadcaster = function(key, data, room) {
     d[1] = d[1] + '';
 
     const time = new Date().getTime();
-
 
     socket.emit('broadcast', {room: room, event: d, time: time});
 }
