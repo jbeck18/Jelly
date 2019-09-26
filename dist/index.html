@@ -8,10 +8,13 @@
     </head>
     <body>
       <header id="logo">
-        <div id="controls">
-            <input id="pressed-color" type="text" value="808080" maxlength="6">
-            <button id="start-sound" type="button">Start Sound</button>
-            <button id="start-playback" type="button">Start Playback</button>
+        <div id="color-controls">
+            <div class="control-module">
+                <h4>Key Color (hex value)</h4>
+                <input id="pressed-color" type="text" value="808080" maxlength="6">
+            </div>
+            
+            <!-- <button id="start-sound" type="button">Start Sound</button> -->
         </div>
         <svg width="316px" height="98px" viewBox="0 0 316 98" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
           <defs>
@@ -37,8 +40,17 @@
               </g>
           </g>
         </svg>
-        <div id="logo-spacer">
-
+        <div id="playback-controls">
+            <div class="control-module">
+                <h4>Begin Recording</h4>
+                <input id="recording-title" type="text" maxlength="50" placeholder="Recording Title">
+                <button id="start-recording" type="button">Start Recording</button>
+            </div>
+            <div class="control-module">
+                <h4>Play Recording</h4>
+                <input id="playback-title" type="text" maxlength="50" placeholder="Recording Title">
+                <button id="start-playback" type="button">Start Playback</button>
+            </div>
         </div>
       </header>
 

@@ -5,22 +5,30 @@ const noteName = document.getElementById('note-name');
 const visualizer = document.getElementById('visualizer');
 
 const dpi = window.devicePixelRatio;
-console.log(dpi);
 const animationStep = dpi*3;
 
-visualizer.width = document.getElementById('visualizer-div').getBoundingClientRect().width * dpi;
-visualizer.height = document.getElementById('visualizer-div').getBoundingClientRect().height * dpi;
-console.log(visualizer.width);
-console.log(visualizer.height);
+var defaultWidthBlackKey;
+var defaultWidthWhiteKey;
+
+var visualizerHeight;
+
+function calculateSizes() {
+    visualizer.width = document.getElementById('visualizer-div').getBoundingClientRect().width * dpi;
+    visualizer.height = document.getElementById('visualizer-div').getBoundingClientRect().height * dpi;
+
+    defaultWidthBlackKey = document.getElementById('22').getBoundingClientRect().width * dpi;
+    defaultWidthWhiteKey = document.getElementById('21').getBoundingClientRect().width * dpi;
+
+    visualizerHeight = visualizer.getBoundingClientRect().height * dpi;
+
+    console.log('dpi: ' + dpi);
+    console.log('width: ' + visualizer.width);
+    console.log('height: ' + visualizer.height);
+};
+calculateSizes();
+window.addEventListener('resize', calculateSizes);
 
 var keysPressed = [];
-
-// Need to be recalculated when window is resized?
-const defaultWidthBlackKey = document.getElementById('22').getBoundingClientRect().width * dpi;
-const defaultWidthWhiteKey = document.getElementById('21').getBoundingClientRect().width * dpi;
-
-const visualizerHeight = visualizer.getBoundingClientRect().height * dpi;
-
 var visualizerNodes = [];
 
 /**
@@ -211,17 +219,10 @@ const handle = function(key, data) {
     noteName.innerHTML = keysPressed.join(', ') || '-';
 };
 
-let interval = null;
-
 /**
  * Start the visualizer
  */
 const start = function() {
-
-    if(interval !== null) {
-        return;
-    }
-
     const begin = function() {
         for(let i = 0; i < visualizerNodes.length; i++) {
 
@@ -257,16 +258,7 @@ const start = function() {
     begin();
 }
 
-/**
- * Stop the visualizer
- */
-const stop = function() {
-    clearInterval(interval);
-    interval = null;
-}
-
 export const Visualizer = {
     handleEvent: (key, data) => handle(key, data),
-    start: () => start(),
-    stop: () => stop()
+    start: () => start()
 };

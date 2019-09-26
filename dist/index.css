@@ -8,10 +8,27 @@ html {
     text-align: center;
 }
 
-#controls {
+#color-controls {
+    display: inline-flex;
     text-align: left;
     width: 33%;
     margin: auto auto;
+}
+
+.control-module {
+    display: inline-flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+}
+
+.control-module h4 {
+    color: white;
+    text-align: center;
+}
+
+.control-module button {
+    margin-top: 20px;
 }
 
 #logo {
@@ -22,8 +39,10 @@ html {
     background-color: black;
 }
 
-#logo-spacer {
+#playback-controls {
     width: 33%;
+    display: inline-flex;
+    justify-content: space-around;
 }
 
 #logo svg {

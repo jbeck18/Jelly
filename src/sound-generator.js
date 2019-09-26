@@ -20,7 +20,7 @@ export function createPianoSound() {
         console.log("Your browser does not support AudioContext!");
     }
 }
-document.getElementById('start-sound').onclick = createPianoSound;
+// document.getElementById('start-sound').onclick = createPianoSound;
 
 var deactivateQueue = [];
 

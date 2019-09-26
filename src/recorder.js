@@ -12,6 +12,10 @@ if(typeof params.recordingtitle !== 'undefined') {
 console.log(params);
 console.log("Should record?: " + shouldRecord);
 
+document.getElementById('start-recording').onclick = function(e) {
+    window.location.search = `?recordingTitle=${document.getElementById('recording-title').value}`;
+}
+
 function setup() {
     if(!shouldRecord) {
         return;

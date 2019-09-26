@@ -47,7 +47,10 @@ function startPlayback() {
 }
 
 function setup() {
-    document.getElementById('start-playback').onclick = startPlayback;
+    document.getElementById('start-playback').onclick = function(e) {
+        window.location.search = `?playbackTitle=${document.getElementById('playback-title').value}`;
+    }
+    setTimeout(startPlayback, 1000);
 }
 
 export const Playback = {
