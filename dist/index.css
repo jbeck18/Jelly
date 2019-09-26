@@ -8,8 +8,9 @@ html {
     text-align: center;
 }
 
-#color-controls {
+#controls-left {
     display: inline-flex;
+    justify-content: space-around;
     text-align: left;
     width: 33%;
     margin: auto auto;

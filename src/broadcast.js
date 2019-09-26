@@ -7,6 +7,14 @@ console.log("creating socket...");
 const params = utils.getParameters();
 let socket = null;
 
+document.getElementById('join-broadcast').onclick = function(e) {
+    window.location.search = `?room=${document.getElementById('broadcast-channel-join').value}`;
+};
+
+document.getElementById('start-broadcast').onclick = function(e) {
+    window.location.search = `?room=${document.getElementById('broadcast-channel-start').value}&isBroadcaster=true`;
+};
+
 const handleBroadcaster = function(key, data, room) {
     // console.log("Broadcasting data to room: " + room);
     let d = [];

@@ -8,13 +8,23 @@
     </head>
     <body>
       <header id="logo">
-        <div id="color-controls">
+        <div id="controls-left">
             <div class="control-module">
                 <h4>Key Color (hex value)</h4>
                 <input id="pressed-color" type="text" value="808080" maxlength="6">
             </div>
+            <div class="control-module">
+                <h4>Start Broadcast</h4>
+                <input id="broadcast-channel-start" type="text" maxlength="50" placeholder="Room Name">
+                <button id="start-broadcast" type="button">Start Broadcast</button>
+            </div>
+            <div class="control-module">
+                <h4>Join Broadcast</h4>
+                <input id="broadcast-channel-join" type="text" maxlength="50" placeholder="Room Name">
+                <button id="join-broadcast" type="button">Join Broadcast</button>
+            </div>
             
-            <!-- <button id="start-sound" type="button">Start Sound</button> -->
+            <button id="start-sound" type="button">Start Sound Engine</button>
         </div>
         <svg width="316px" height="98px" viewBox="0 0 316 98" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
           <defs>
